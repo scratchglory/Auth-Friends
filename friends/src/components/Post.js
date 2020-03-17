@@ -1,13 +1,17 @@
 import React from "react";
-import axios from "axios";
-// import { axiosWithAuth } from "../utils/axiosWithAuth";
+// import axios from "axios";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import FriendsList from "./FriendsList";
 
 class Post extends React.Component {
   state = {
-    id: "",
-    name: "",
-    age: "",
-    email: ""
+    info: {
+      id: "",
+      name: "",
+      age: "",
+      email: ""
+    },
+    friendsList: []
   };
 
   // CHANGE HANDLERS
@@ -22,9 +26,13 @@ class Post extends React.Component {
     // axios.post method takes two arguments
     // 1. url
     // 2. 'data' we need to post to the BE server, then chaned with 'then' and 'catch' method
-    axios
-      .post("http://localhost:5000/add-friend", data)
-      .then(res => console.log(res))
+    const token = window.localStorage.getItem("token");
+    axiosWithAuth()
+      .post("/api/friends", data)
+      .then(res => {
+        console.log(res.data);
+        this.state.friendsList = res.data;
+      })
       .catch(err => console.log("POST-ERROR: ", err));
   };
 
@@ -81,6 +89,7 @@ class Post extends React.Component {
           />
           <button type="submit">HELLO NEW FRIEND!</button>
         </form>
+        <FriendsList newFriends={this.state.friendsList} />
       </div>
     );
   }
