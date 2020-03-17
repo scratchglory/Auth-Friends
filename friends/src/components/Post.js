@@ -89,7 +89,15 @@ class Post extends React.Component {
           />
           <button type="submit">HELLO NEW FRIEND!</button>
         </form>
-        <FriendsList newFriends={this.state.friendsList} />
+        <div>
+          {this.state.friendsList.map(friend => (
+            <div>
+              <h3>{friend.name}</h3>
+              <p>{friend.age}</p>
+              <p>EMAIL: {friend.email}</p>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
